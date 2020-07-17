@@ -73,7 +73,7 @@ def load_json(path, keys_to_int=False):
   # Keys to integers.
   def convert_keys_to_int(x):
     return {int(k) if k.lstrip('-').isdigit() else k: v for k, v in x.items()}
-
+  # with:自动调用close方法
   with open(path, 'r') as f:
     if keys_to_int:
       content = json.load(f, object_hook=lambda x: convert_keys_to_int(x))
