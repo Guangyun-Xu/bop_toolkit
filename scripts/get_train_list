@@ -1,10 +1,15 @@
 import os
 import json
+import numpy as np
 
 trainPath = '/media/yumi/Datas/6D_Dataset/BOP_Dataste/lm-o/train_pbr'
 files = os.listdir(trainPath)
+dataListPath = os.path.join(trainPath, 'dataList_1.txt')
 trainListPath = os.path.join(trainPath, 'trainList_1.txt')
+validListPath = os.path.join(trainPath, 'validList_1.txt')
+dataList = open(dataListPath, 'w')
 trainList = open(trainListPath, 'w')
+validList = open(validListPath, 'w')
 
 for subFile in files:
     if os.path.isdir(os.path.join(trainPath, subFile)):
@@ -24,4 +29,22 @@ for subFile in files:
                             folderName, sceneId, sceneId, objMaskId)
                         # print(scenePath)
                         lineScene = scenePath + '\n'
-                        trainList.write(lineScene)
+                        dataList.write(lineScene)
+
+
+with open(dataListPath, 'r') as f:
+    data = f.readlines()
+    np.random.seed(666)
+    np.random.shuffle(data)
+    number = len(data)
+
+    trainPoint = int(number*0.8)
+    validPoint = int(number)
+
+    for i, image in enumerate(data):
+        if i < trainPoint :
+            trainList.write(image)
+        else:
+            validList.write(image)
+
+
