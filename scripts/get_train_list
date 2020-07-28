@@ -2,49 +2,94 @@ import os
 import json
 import numpy as np
 
-trainPath = '/media/yumi/Datas/6D_Dataset/BOP_Dataste/lm-o/train_pbr'
-files = os.listdir(trainPath)
+trainPath = '/media/yumi/Datas/6D_Dataset/BOP_Dataste/LM-O/train_pbr'
+testPath = '/media/yumi/Datas/6D_Dataset/BOP_Dataste/LM-O/BOP_test19-20'
+
 dataListPath = os.path.join(trainPath, 'dataList_1.txt')
 trainListPath = os.path.join(trainPath, 'trainList_1.txt')
-validListPath = os.path.join(trainPath, 'validList_1.txt')
+validListPath = os.path.join(testPath, 'validList_1.txt')
 dataList = open(dataListPath, 'w')
 trainList = open(trainListPath, 'w')
 validList = open(validListPath, 'w')
 
-for subFile in files:
-    if os.path.isdir(os.path.join(trainPath, subFile)):
-        labelPath = os.path.join(trainPath, subFile, 'scene_gt.json')
-        with open(labelPath, 'r') as f:
-            data = json.load(f)
-            for i in data:
-                sceneKey = str(i)
-                scene = data[sceneKey]
-                for j, obj in enumerate(scene):
-                    objId = obj['obj_id']
-                    if objId == 1:
-                        objMaskId = "{:0>6d}".format(int(j))
-                        sceneId = "{:0>6d}".format(int(i))
-                        folderName = os.path.join(trainPath, subFile)
-                        scenePath = "{} {} {}_{}".format(
-                            folderName, sceneId, sceneId, objMaskId)
-                        # print(scenePath)
-                        lineScene = scenePath + '\n'
-                        dataList.write(lineScene)
+if trainPath == testPath:
+    files = os.listdir(trainPath)
+    for subFile in files:
+        if os.path.isdir(os.path.join(trainPath, subFile)):
+            labelPath = os.path.join(trainPath, subFile, 'scene_gt.json')
+            with open(labelPath, 'r') as f:
+                data = json.load(f)
+                for i in data:
+                    sceneKey = str(i)
+                    scene = data[sceneKey]
+                    for j, obj in enumerate(scene):
+                        objId = obj['obj_id']
+                        if objId == 1:
+                            objMaskId = "{:0>6d}".format(int(j))
+                            sceneId = "{:0>6d}".format(int(i))
+                            folderName = os.path.join(trainPath, subFile)
+                            scenePath = "{} {} {}_{}".format(
+                                folderName, sceneId, sceneId, objMaskId)
+                            # print(scenePath)
+                            lineScene = scenePath + '\n'
+                            dataList.write(lineScene)
+
+    with open(dataListPath, 'r') as f:
+        data = f.readlines()
+        np.random.seed(666)
+        np.random.shuffle(data)
+        number = len(data)
+
+        trainPoint = int(number * 0.8)
+
+        for i, image in enumerate(data):
+            if i < trainPoint:
+                trainList.write(image)
+            else:
+                validList.write(image)
+else:
+    trainFiles = os.listdir(trainPath)
+    for subFile in trainFiles:
+        if os.path.isdir(os.path.join(trainPath, subFile)):
+            labelPath = os.path.join(trainPath, subFile, 'scene_gt.json')
+            with open(labelPath, 'r') as f:
+                data = json.load(f)
+                for i in data:
+                    sceneKey = str(i)
+                    scene = data[sceneKey]
+                    for j, obj in enumerate(scene):
+                        objId = obj['obj_id']
+                        if objId == 1:
+                            objMaskId = "{:0>6d}".format(int(j))
+                            sceneId = "{:0>6d}".format(int(i))
+                            folderName = os.path.join(trainPath, subFile)
+                            scenePath = "{} {} {}_{}".format(
+                                folderName, sceneId, sceneId, objMaskId)
+                            # print(scenePath)
+                            lineScene = scenePath + '\n'
+                            trainList.write(lineScene)
+    testFiles = os.listdir(testPath)
+    for subFile in testFiles:
+        if os.path.isdir(os.path.join(testPath, subFile)):
+            labelPath = os.path.join(testPath, subFile, 'scene_gt.json')
+            with open(labelPath, 'r') as f:
+                data = json.load(f)
+                for i in data:
+                    sceneKey = str(i)
+                    scene = data[sceneKey]
+                    for j, obj in enumerate(scene):
+                        objId = obj['obj_id']
+                        if objId == 1:
+                            objMaskId = "{:0>6d}".format(int(j))
+                            sceneId = "{:0>6d}".format(int(i))
+                            folderName = os.path.join(testPath, subFile)
+                            scenePath = "{} {} {}_{}".format(
+                                folderName, sceneId, sceneId, objMaskId)
+                            # print(scenePath)
+                            lineScene = scenePath + '\n'
+                            validList.write(lineScene)
 
 
-with open(dataListPath, 'r') as f:
-    data = f.readlines()
-    np.random.seed(666)
-    np.random.shuffle(data)
-    number = len(data)
 
-    trainPoint = int(number*0.8)
-    validPoint = int(number)
-
-    for i, image in enumerate(data):
-        if i < trainPoint :
-            trainList.write(image)
-        else:
-            validList.write(image)
 
 
