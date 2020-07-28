@@ -4,12 +4,15 @@ import numpy as np
 
 trainPath = '/media/yumi/Datas/6D_Dataset/BOP_Dataste/LM-O/train_pbr'
 testPath = '/media/yumi/Datas/6D_Dataset/BOP_Dataste/LM-O/BOP_test19-20'
+splitTrainList = True
 
 dataListPath = os.path.join(trainPath, 'dataList_1.txt')
 trainListPath = os.path.join(trainPath, 'trainList_1.txt')
+trainListSplitPath = os.path.join(trainPath, 'trainListSplit_1.txt')
 validListPath = os.path.join(testPath, 'validList_1.txt')
 dataList = open(dataListPath, 'w')
 trainList = open(trainListPath, 'w')
+trainListSplit = open(trainListSplitPath, 'w')
 validList = open(validListPath, 'w')
 
 if trainPath == testPath:
@@ -68,6 +71,20 @@ else:
                             # print(scenePath)
                             lineScene = scenePath + '\n'
                             trainList.write(lineScene)
+    if splitTrainList:
+        with open(trainListPath, 'r') as f:
+            data = f.readlines()
+            np.random.seed(666)
+            np.random.shuffle(data)
+            number = len(data)
+
+            trainPoint = int(number * 0.1)
+
+            for i, image in enumerate(data):
+                if i < trainPoint:
+                    trainListSplit.write(image)
+
+
     testFiles = os.listdir(testPath)
     for subFile in testFiles:
         if os.path.isdir(os.path.join(testPath, subFile)):
