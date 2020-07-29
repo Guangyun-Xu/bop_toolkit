@@ -31,7 +31,7 @@ if trainPath == testPath:
                             objMaskId = "{:0>6d}".format(int(j))
                             sceneId = "{:0>6d}".format(int(i))
                             folderName = os.path.join(trainPath, subFile)
-                            scenePath = "{} {} {}_{}".format(
+                            scenePath = "{} {}.jpg {}_{}.jpg".format(
                                 folderName, sceneId, sceneId, objMaskId)
                             # print(scenePath)
                             lineScene = scenePath + '\n'
@@ -50,6 +50,7 @@ if trainPath == testPath:
                 trainList.write(image)
             else:
                 validList.write(image)
+
 else:
     trainFiles = os.listdir(trainPath)
     for subFile in trainFiles:
@@ -66,7 +67,7 @@ else:
                             objMaskId = "{:0>6d}".format(int(j))
                             sceneId = "{:0>6d}".format(int(i))
                             folderName = os.path.join(trainPath, subFile)
-                            scenePath = "{} {} {}_{}".format(
+                            scenePath = "{} {}.jpg {}_{}.jpg".format(
                                 folderName, sceneId, sceneId, objMaskId)
                             # print(scenePath)
                             lineScene = scenePath + '\n'
@@ -100,7 +101,7 @@ else:
                             objMaskId = "{:0>6d}".format(int(j))
                             sceneId = "{:0>6d}".format(int(i))
                             folderName = os.path.join(testPath, subFile)
-                            scenePath = "{} {} {}_{}".format(
+                            scenePath = "{} {}.png {}_{}.png".format(
                                 folderName, sceneId, sceneId, objMaskId)
                             # print(scenePath)
                             lineScene = scenePath + '\n'
