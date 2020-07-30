@@ -8,7 +8,7 @@ splitTrainList = True
 
 dataListPath = os.path.join(trainPath, 'dataList_1.txt')
 trainListPath = os.path.join(trainPath, 'trainList_1.txt')
-trainListSplitPath = os.path.join(trainPath, 'trainListSplit_1.txt')
+trainListSplitPath = os.path.join(trainPath, 'trainListSplit500_1.txt')
 validListPath = os.path.join(testPath, 'validList_1.txt')
 dataList = open(dataListPath, 'w')
 trainList = open(trainListPath, 'w')
@@ -31,8 +31,8 @@ if trainPath == testPath:
                             objMaskId = "{:0>6d}".format(int(j))
                             sceneId = "{:0>6d}".format(int(i))
                             folderName = os.path.join(trainPath, subFile)
-                            scenePath = "{} {}.jpg {}_{}.jpg".format(
-                                folderName, sceneId, sceneId, objMaskId)
+                            scenePath = "{} {}.jpg {}.png {}_{}.png".format(
+                                folderName, sceneId, sceneId, sceneId, objMaskId)
                             # print(scenePath)
                             lineScene = scenePath + '\n'
                             dataList.write(lineScene)
@@ -67,8 +67,8 @@ else:
                             objMaskId = "{:0>6d}".format(int(j))
                             sceneId = "{:0>6d}".format(int(i))
                             folderName = os.path.join(trainPath, subFile)
-                            scenePath = "{} {}.jpg {}_{}.jpg".format(
-                                folderName, sceneId, sceneId, objMaskId)
+                            scenePath = "{} {}.jpg {}.png {}_{}.png".format(
+                                folderName, sceneId, sceneId, sceneId, objMaskId)
                             # print(scenePath)
                             lineScene = scenePath + '\n'
                             trainList.write(lineScene)
@@ -79,7 +79,7 @@ else:
             np.random.shuffle(data)
             number = len(data)
 
-            trainPoint = int(number * 0.1)
+            trainPoint = int(number * 0.01)
 
             for i, image in enumerate(data):
                 if i < trainPoint:
@@ -101,8 +101,8 @@ else:
                             objMaskId = "{:0>6d}".format(int(j))
                             sceneId = "{:0>6d}".format(int(i))
                             folderName = os.path.join(testPath, subFile)
-                            scenePath = "{} {}.png {}_{}.png".format(
-                                folderName, sceneId, sceneId, objMaskId)
+                            scenePath = "{} {}.png {}.png {}_{}.png".format(
+                                folderName, sceneId, sceneId, sceneId, objMaskId)
                             # print(scenePath)
                             lineScene = scenePath + '\n'
                             validList.write(lineScene)
