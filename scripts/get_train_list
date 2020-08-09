@@ -6,7 +6,7 @@ cls_id = 8
 trainPath = '/media/yumi/Datas/6D_Dataset/BOP_Dataste/LM-O/train_pbr'
 testPath = '/media/yumi/Datas/6D_Dataset/BOP_Dataste/LM-O/BOP_test19-20'
 splitTrainList = True
-n_splitTrainList = 500
+n_splitTrainList = 10000
 
 dataListPath = os.path.join(trainPath, 'dataList_{}.txt'.format(cls_id))
 trainListPath = os.path.join(trainPath, 'trainList_{}.txt'.format(cls_id))
@@ -39,6 +39,7 @@ if trainPath == testPath:
                             # print(scenePath)
                             lineScene = scenePath + '\n'
                             dataList.write(lineScene)
+                dataList.close()
 
     with open(dataListPath, 'r') as f:
         data = f.readlines()
@@ -53,7 +54,8 @@ if trainPath == testPath:
                 trainList.write(image)
             else:
                 validList.write(image)
-
+        trainList.close()
+        validList.close()
 else:
     trainFiles = os.listdir(trainPath)
     for subFile in trainFiles:
@@ -75,6 +77,8 @@ else:
                             # print(scenePath)
                             lineScene = scenePath + '\n'
                             trainList.write(lineScene)
+                trainList.close()
+
     if splitTrainList:
         with open(trainListPath, 'r') as f:
             data = f.readlines()
@@ -86,7 +90,7 @@ else:
             for i, image in enumerate(data):
                 if i < trainPoint:
                     trainListSplit.write(image)
-
+            trainList.close()
 
     testFiles = os.listdir(testPath)
     for subFile in testFiles:
@@ -108,7 +112,7 @@ else:
                             # print(scenePath)
                             lineScene = scenePath + '\n'
                             validList.write(lineScene)
-
+                validList.close()
 
 
 
